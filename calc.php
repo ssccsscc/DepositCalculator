@@ -34,12 +34,21 @@ if (!array_key_exists("startDate", $input)
         exit;
 }
 
-$date_start = DateTime::createFromFormat("d.m.Y", $input["startDate"])->setTime(0, 0);
-if ($date_start === false)
+function isDateFormatValid($date){
+    $result = explode(".", $date);
+    if(sizeof($result) !== 3){
+        return false;
+    }
+    return checkdate($result[1], $result[0], $result[2]);
+}
+
+$date_start = DateTime::createFromFormat("d.m.Y", $input["startDate"]);
+if ($date_start === false || !isDateFormatValid($input["startDate"]))
 {
     http_response_code(400);
     exit;
 }
+$date_start->setTime(0, 0);
 
 $sum = $input["sum"];
 if (!is_int($sum) ||  $sum < 1000 || $sum > 3000000)
