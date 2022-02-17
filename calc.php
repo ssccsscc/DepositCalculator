@@ -111,12 +111,19 @@ for ($i=0; $i < $term; $i++)
 
     $intervalDays = $payDate->diff($prevPayDate)->format("%a");
 
-    $sumN = $sumN + ($sumN + $sumAdd) * $intervalDays * ($percent / $daysInThisYear);
+    if($i===0)
+    {
+        $sumN = $sumN + ($sumN) * $intervalDays * ($percent / $daysInThisYear);
+    }
+    else
+    {
+        $sumN = $sumN + ($sumN + $sumAdd) * $intervalDays * ($percent / $daysInThisYear);
+    }
 
     $prevPayDate = $payDate;
 }
 
-$sumN = round($sumN + $sumAdd * $term, 2, PHP_ROUND_HALF_DOWN);
+$sumN = round($sumN + $sumAdd * ($term - 1), 2, PHP_ROUND_HALF_DOWN);
 
 header('Content-Type: application/json; charset=utf-8');
 
